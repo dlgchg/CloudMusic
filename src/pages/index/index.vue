@@ -8,11 +8,11 @@
         indicator-color="#bdbdbd"
         indicator-active-color="#ffffff"
       >
-        <swiper-item v-for="item in swiperData" :key="item.src">
+        <swiper-item v-for="item in swiperData" :key="item.id">
           <view class="swiper-item uni-bg-red">
             <image
               class="swiper-item-image"
-              :src="item.src"
+              :src="item.picUrl"
               mode="aspectFill"
             />
           </view>
@@ -106,7 +106,7 @@
 				  <view class="title">{{ item.title }}</view>
 				  <view class="desc">
 					  {{ item.desc }}
-					  <text class="hotplay" v-if="item.hot">今日热播<text/>
+					  <!-- <text class="hotplay" v-if="item.hot">今日热播<text/> -->
 
 				  </view>
 			  </view>
@@ -119,45 +119,14 @@
 </template>
 
 <script>
+
+import axios from 'axios'
+
 export default {
   data() {
     return {
       title: "音乐馆",
-      swiperData: [
-        {
-          src:
-            "http://p4.music.126.net/kzdfn8XZnw99wmj_vl4dfg==/109951163200239897.jpg",
-        },
-        {
-          src:
-            "http://static.statickksmg.com/image/2012/12/05/fe011ce9517cc65750227ce3923c7982.jpg",
-        },
-        {
-          src:
-            "http://n.sinaimg.cn/translate/368/w700h468/20181012/LGw0-hktxqai6658212.jpg",
-		},
-		{
-			src: "http://n.sinaimg.cn/transform/20151030/xaxQ-fxkhcfq0982007.jpg",
-		},
-		{
-			src: "http://gb.cri.cn/mmsource/images/2007/11/30/em071129044.jpg",
-		},
-		{
-			src: "https://tse4-mm.cn.bing.net/th/id/OIP.1SCLEwE1jswuA3sstI7emAHaHa?pid=Api&rs=1",
-		},
-		{
-			src: "https://y.gtimg.cn/music/photo_new/T002R300x300M000001Zrk6t0urxvG.jpg?max_age=2592000",
-		},
-		{
-			src: "http://c4.haibao.cn/img/600_0_100_0/liqb7DBFHlH9M/piccommon/1178/11782/liqb7DBFHlH9M.jpg",
-		},
-		{
-			src: "https://y.gtimg.cn/music/photo_new/T002R300x300M000003yeNV10Tzs9v.jpg?max_age=2592000",
-		},
-		{
-			src:  "http://img1.cache.netease.com/ent/2014/7/15/201407150923194d705_550.jpg",
-		},
-      ],
+      swiperData: [],
       hotData: [
         {
           src: "http://n.sinaimg.cn/transform/20151030/xaxQ-fxkhcfq0982007.jpg",
@@ -290,6 +259,17 @@ export default {
   },
   onLoad() {},
   methods: {},
+  mounted() {
+    uni.request({
+        url: 'http://localhost:3000/personalized/newsong',
+        success: res => {
+          if (res.statusCode === 200) {
+            this.swiperData = res.data.result
+          }
+        }
+      }
+    )
+  }
 };
 </script>
 
